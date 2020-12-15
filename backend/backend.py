@@ -1,19 +1,8 @@
-# --------------------------------------------------------------------------------------------
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License. See License.txt in the project root for license information.
-# --------------------------------------------------------------------------------------------
-
 """
-This sample demonstrates how to use the Microsoft Azure Event Hubs Client for Python async API to 
-read messages sent from a device. Please see the documentation for @azure/event-hubs package
-for more details at https://pypi.org/project/azure-eventhub/
-
-For an example that uses checkpointing, follow up this sample with the sample in the 
-azure-eventhub-checkpointstoreblob package on GitHub at the following link:
-
-https://github.com/Azure/azure-sdk-for-python/blob/master/sdk/eventhub/azure-eventhub-checkpointstoreblob-aio/samples/receive_events_using_checkpoint_store_async.py
+backend.py
+Auteurs : Daniel Oliveira et Edin Mujkanovic
+Description : backend permettant de gérer les évenements dans les pièces. Il est basé sur un script disponible dans le tutoriel Microsoft Azure.
 """
-
 
 import asyncio
 from azure.eventhub import TransportType
@@ -71,6 +60,9 @@ async def on_error(partition_context, error):
         print("An exception: {} occurred during the load balance process.".format(error))
 
 
+'''
+Methode permettant de parser le message reçu depuis IoT Hub
+'''
 def parse_message(message, device_id):
     global rooms
     message = json.loads(message)
@@ -93,7 +85,9 @@ def parse_message(message, device_id):
     else :
         update_room(message)
 
-
+'''
+Methode permettant de mettre à jour les valeurs des radiateurs et des stores de la chambre
+'''
 def update_room(message):
     global rooms
     room_name = message["room"]
@@ -107,6 +101,8 @@ def update_room(message):
         # si la pièce était vide, augmenter la température
         if rooms[room_name]["person"] == 1:
             call_method("IncreaseTemp", room_name)
+
+        print("TEST")
 
     if previous_room != "":
         rooms[previous_room]["person"] -= 1

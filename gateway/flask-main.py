@@ -365,6 +365,7 @@ if __name__ == '__main__':
 
     try:
         zwave_server_address = "http://192.168.0.194:5000"
+        # Appelle de la methode notify dans un thread distinct.
         device_method_thread = threading.Thread(target=notify, args=(zwave_server_address,knx_gateway,))
         device_method_thread.daemon = True
         device_method_thread.start()

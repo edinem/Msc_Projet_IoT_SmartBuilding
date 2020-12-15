@@ -7,34 +7,17 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:weightSum="4"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="29dp"
-        tools:ignore="MissingConstraints">
-
-        <TextView
-            android:id="@+id/PositionText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Current Room\n RoomX"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            tools:textColor="@color/colorPrimaryDark" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_width="411dp"
+        android:layout_height="68dp"
         android:layout_gravity="center"
+        android:layout_marginTop="64dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="10">
+        android:weightSum="10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PositionText">
 
         <EditText
             android:id="@+id/Percentage"
@@ -83,64 +66,80 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/PositionText"
+        android:layout_width="179dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="116dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Current Room\n RoomX"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:textColor="@color/colorPrimaryDark" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView">
+
+
+        <Button
+            android:id="@+id/StoreButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_marginTop="20dp"
+            android:backgroundTint="?android:attr/textColorHighlight"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Store"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="351dp"
+            tools:textColor="@color/colorPrimaryDark" />
 
-            <Button
-                android:id="@+id/LightButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="?android:attr/textColorHighlight"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="Light"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="24sp"
-                android:textStyle="italic"
-                tools:layout_editor_absoluteX="148dp"
-                tools:layout_editor_absoluteY="289dp"
-                tools:textColor="@color/colorPrimaryDark" />
+        <Button
+            android:id="@+id/RadiatorButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="?android:attr/textColorHighlight"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Radiator"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="418dp"
+            tools:textColor="@color/colorPrimaryDark" />
 
-
-            <Button
-                android:id="@+id/StoreButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="?android:attr/textColorHighlight"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="Store"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="24sp"
-                android:textStyle="italic"
-                tools:layout_editor_absoluteX="148dp"
-                tools:layout_editor_absoluteY="351dp"
-                tools:textColor="@color/colorPrimaryDark" />
-
-            <Button
-                android:id="@+id/RadiatorButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="?android:attr/textColorHighlight"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="Radiator"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="24sp"
-                android:textStyle="italic"
-                tools:layout_editor_absoluteX="148dp"
-                tools:layout_editor_absoluteY="418dp"
-                tools:textColor="@color/colorPrimaryDark" />
-
-
-        </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:text="First blind: \n\nSecond blind:\n\nFirst valve:\n\nSecond valve:\n\n"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </android.support.constraint.ConstraintLayout>
