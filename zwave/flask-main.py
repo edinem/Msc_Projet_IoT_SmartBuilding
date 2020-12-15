@@ -1229,9 +1229,6 @@ if __name__ == '__main__':
             pass
         except Exception as e:
             sys.exit(e)
-        #device_method_thread = threading.Thread(target=notify, args=(backend,))
-        #device_method_thread.daemon = True
-        #device_method_thread.start()
 
         app.run(
             debug=True if log_level_n == logging.DEBUG else False,
