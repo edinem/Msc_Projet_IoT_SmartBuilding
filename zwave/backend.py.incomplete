@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8; mode: python -*-
 ################################################################################
 """backend.py -- a Flask-based server for HEPIA's LSDS Smart Building IoT
 Z-Wave Lab (backend)
 
 Documentation is written in `apidoc <http://www.python.org/>`_. You should
 already have a copy in `doc/index.html`
-
-Modified by Daniel Oliveira Paiva and Edin Mujkanovic for the IoT course.
 
 To-do
 =====
@@ -122,12 +120,6 @@ class Backend():
         'motion'      : 'Sensor',
         'temperature' : 'Temperature',
         'ultraviolet' : 'Ultraviolet',
-    }
-
-    _rooms_location = {
-        # roomId => roomLocation
-        '31126'     : 'room1',
-        '19547'     : 'room2'
     }
 
     _initials = {
@@ -251,19 +243,18 @@ class Backend():
             "WakeUp"                :  4, # Start wake up process if a sleeping node
             "ManufacturerSpecific1" :  5, # Retrieve manufacturer name and product ids if ProtocolInfo lets us
             "NodeInfo"              :  6, # Retrieve info about supported, controlled command classes
-            "NodePlusInfo"          :  7, # Retrieve Z-Wave+ info and update device classes (Added by Edin et Daniel)
-            "SecurityReport"        :  8, # Retrieve a list of Command Classes that require Security
-            "ManufacturerSpecific2" :  9, # Retrieve manufacturer name and product ids
-            "Versions"              : 10, # Retrieve version information
-            "Instances"             : 11, # Retrieve information about multiple command class instances
-            "Static"                : 12, # Retrieve static information (doesn't change)
-            "Probe1"                : 13, # Ping a node upon starting with configuration
-            "Associations"          : 14, # Retrieve information about associations
-            "Neighbors"             : 15, # Retrieve node neighbor list
-            "Session"               : 16, # Retrieve session information (changes infrequently)
-            "Dynamic"               : 17, # Retrieve dynamic information (changes frequently)
-            "Configuration"         : 18, # Retrieve configurable parameter information (only done on request)
-            "Complete"              : 19  # Query process is completed for this node
+            "SecurityReport"        :  7, # Retrieve a list of Command Classes that require Security
+            "ManufacturerSpecific2" :  8, # Retrieve manufacturer name and product ids
+            "Versions"              :  9, # Retrieve version information
+            "Instances"             : 10, # Retrieve information about multiple command class instances
+            "Static"                : 11, # Retrieve static information (doesn't change)
+            "Probe1"                : 12, # Ping a node upon starting with configuration
+            "Associations"          : 13, # Retrieve information about associations
+            "Neighbors"             : 14, # Retrieve node neighbor list
+            "Session"               : 15, # Retrieve session information (changes infrequently)
+            "Dynamic"               : 16, # Retrieve dynamic information (changes frequently)
+            "Configuration"         : 17, # Retrieve configurable parameter information (only done on request)
+            "Complete"              : 18  # Query process is completed for this node
         }
 
 
@@ -550,31 +541,7 @@ class Backend():
         :returns: dict: with various info about the network and currently
                 associated nodes
         """
-        result = {
-            'Network Home ID':  self.network.home_id_str,
-        }
-        nodes = self.network.nodes
-        for k, node in nodes.items():
-            percentage = round((self.queryStages[node.query_stage] / 19) * 100, 2)
-            node = {
-                k : {
-                "Is Ready" : node.is_ready,
-                "Neighbours" : self.get_neighbours_list(k),
-                "Node ID": k,
-                "Node location": node.location,
-                "Node name": node.name,
-                "Node type": node.product_type,
-                "Product name": node.product_name,
-                "Query Stage": node.query_stage,
-                "Query Stage (%)": percentage
-                }
-            }
-
-            result.update(node)
-
-        return result
-
-
+        #### COMPLETE THIS METHOD ####
 
 
     def get_nodes_configuration(self):
@@ -642,13 +609,7 @@ class Backend():
               "4": "[not ready]"
             }
         """
-
-        nodes = self.network.nodes
-        values = OrderedDict()
-        for k,node in nodes.items():
-            values[k] = node.name
-
-        return values
+        #### COMPLETE THIS METHOD ####
 
 
     def get_sensors_list(self):
@@ -663,14 +624,8 @@ class Backend():
                 "3": "MultiSensor 6"
             }
         """
-        nodes = self.network.nodes
-        values = OrderedDict()
-        for k,node in nodes.items():
-            if self._is_sensor(node):
-                values[k] = node.name
+        #### COMPLETE THIS METHOD ####
 
-        return values
-    
 
     def get_dimmers_list(self):
         """Get a list of dimmer nodes in the network, where indexes are
@@ -684,30 +639,7 @@ class Backend():
                 "3": ""
             }
         """
-
-        nodes = self.network.nodes
-        values = OrderedDict()
-        for k,node in nodes.items():
-            if self._is_dimmer(node):
-                values[k] = node.name
-
-        return values
-
-    def set_dimmers_by_room(self, roomId, value):
-        room = self._rooms_location[roomId]
-
-        nodes = self.network.nodes
-        for k,node in nodes.items():
-            if self._is_dimmer(node) and node.location == room:
-                self.set_dimmer_level(node.node_id, value)
-
-        return True      
-
-    
-
-
-
-
+        #### COMPLETE THIS METHOD ####
 
 
     ############################################################################
@@ -820,7 +752,6 @@ class Backend():
 
 
     def add_node(self):
-        # source pour la boucle de 20 secondes : https://stackoverflow.com/questions/24374620/python-loop-to-run-for-certain-amount-of-seconds/24374857
         """Adds a node to the network by switching the controller into
         inclusion mode for 20 seconds. The node to add can not be a
         controller. Physical action is required on the node to be added.
@@ -831,18 +762,7 @@ class Backend():
                 * timeout occurs, or
                 * network is not started
         """
-        if(started == False):
-            raise RuntimeError("Network is not started")
-
-        self.network.controller.add_node()
-        t_end = time.time() + 20 
-        while time.time() < t_end:
-            if self.node_added != None:
-                return self.node_added.to_dict()
-
-        raise RuntimeError("Timeout")
-
-
+        #### COMPLETE THIS METHOD ####
 
 
     def remove_node(self):
@@ -856,11 +776,7 @@ class Backend():
                 * timeout occurs, or
                 * network is not started
         """
-        self.network.controller.remove_node()
-        t_end = time.time() + 20 
-        while time.time() < t_end:
-            if self.node_removed != None:
-                return self.node_removed.to_dict()
+        #### COMPLETE THIS METHOD ####
 
 
     def set_node_location(self, n, value):
@@ -873,14 +789,8 @@ class Backend():
 
         :raises: RuntimeError: if the node is not found
         """
-        node = self._lookup_node(n)
-        if not node:
-            raise RuntimeError("No such node")
+        #### COMPLETE THIS METHOD ####
 
-        prev_loc = node.location
-        node.location = value
-
-        return prev_loc
 
     def set_node_name(self, n, value):
         """Set a node's name.
@@ -892,13 +802,7 @@ class Backend():
 
         :raises: RuntimeError: if the node is not found
         """
-        node = self._lookup_node(n)
-        if not node:
-            raise RuntimeError("No such node")
-
-        prev_name = node.name
-        node.name = value
-        return prev_name
+        #### COMPLETE THIS METHOD ####
 
 
     def get_node_location(self, n):
@@ -926,11 +830,7 @@ class Backend():
 
         :raises: RuntimeError: if the node is not found
         """
-
-        node = self._lookup_node(n)
-        if(node == None):
-            raise RuntimeError("Node not found")
-        return node.name
+        #### COMPLETE THIS METHOD ####
 
 
     def get_neighbours_list(self, n):
@@ -942,16 +842,7 @@ class Backend():
 
         :raises: RuntimeError: if the node is not found
         """
-        
-        node = self._lookup_node(n)
-        if(node == None):
-            raise RuntimeError("Node not found")
-        value = [
-            v
-            for v in node.neighbors
-        ]
-
-        return value
+        #### COMPLETE THIS METHOD ####
 
 
     def set_node_parameter(self, n, pindex, value, size):
@@ -969,14 +860,7 @@ class Backend():
 
         :raises: RuntimeError: if the node is not found
         """
-        node = self._lookup_node(n)
-        if node.is_ready:
-            node.request_all_config_params()
-            node.set_config_param(pindex, value, size)
-            return True            
-
-       
-        return False
+        #### COMPLETE THIS METHOD ####
 
 
     def get_node_parameter(self, n, pindex):
@@ -990,31 +874,7 @@ class Backend():
 
         :raises: RuntimeError: if the node is not {found | ready}
         """
-        node = self._lookup_node(n)
-
-        if(node == None):
-            raise RuntimeError("Node not found")
-        
-        if(node.is_ready == False):
-            raise RuntimeError("Node not ready")
-                
-        if node.is_ready:
-            node.request_all_config_params()
-            values = node.get_values(
-                        class_id="All",
-                        genre="Config",
-                        type="All",
-                        readonly="All",
-                        writeonly="All",
-                        index=pindex,
-                        label="All"
-            )
-            value = [
-                v.data
-                for v in values.values()
-            ][0]
-            
-            return value
+        #### COMPLETE THIS METHOD ####
 
 
 ################################################################################
@@ -1107,37 +967,7 @@ class Backend_with_sensors(Backend):
             "value": ...
         }
         """
-        node = self._lookup_sensor_node(n)
-        values = node.get_values(
-            class_id=0x31,      # COMMAND_CLASS_SENSOR_MULTILEVEL
-            genre="User", readonly=True, writeonly=False,
-            label=self._labels_xref['humidity']
-        )
-
-        if not values:
-            raise RuntimeError("Humidity: label not found. Is this a sensor?")
-
-        # who cares if more => bug??? Check the get_values() above
-        if len(values) > 1:
-            self.logger.warning(
-                "Node {}: get_values(Humidity) returned more than one value!?".format(
-                    node.node_id
-                )
-            )
-
-        value = [
-            v.data
-            for k,v in values.items()
-        ][0]
-
-        return {
-            "controller": self.controller_name,
-            "sensor": node.node_id,
-            "location": node.location,
-            "type": 'humidity',
-            "updateTime": self._get_node_timestamp(node),
-            "value": value
-        }
+        #### COMPLETE THIS METHOD ####
 
 
     def get_sensor_luminance(self, n):
@@ -1162,37 +992,7 @@ class Backend_with_sensors(Backend):
             "value": ...
         }
         """
-        node = self._lookup_sensor_node(n)
-        values = node.get_values(
-            class_id=0x31,      # COMMAND_CLASS_SENSOR_MULTILEVEL
-            genre="User", readonly=True, writeonly=False,
-            label=self._labels_xref['luminance']
-        )
-
-        if not values:
-            raise RuntimeError("Luminance: label not found. Is this a sensor?")
-
-        # who cares if more => bug??? Check the get_values() above
-        if len(values) > 1:
-            self.logger.warning(
-                "Node {}: get_values(Luminance) returned more than one value!?".format(
-                    node.node_id
-                )
-            )
-
-        value = [
-            v.data
-            for k,v in values.items()
-        ][0]
-
-        return {
-            "controller": self.controller_name,
-            "sensor": node.node_id,
-            "location": node.location,
-            "type": 'luminance',
-            "updateTime": self._get_node_timestamp(node),
-            "value": value
-        }
+        #### COMPLETE THIS METHOD ####
 
 
     def get_sensor_ultraviolet(self, n):
@@ -1217,37 +1017,7 @@ class Backend_with_sensors(Backend):
             "value": ...
         }
         """
-        node = self._lookup_sensor_node(n)
-        values = node.get_values(
-            class_id=0x31,      # COMMAND_CLASS_SENSOR_MULTILEVEL
-            genre="User", readonly=True, writeonly=False,
-            label=self._labels_xref['ultraviolet']
-        )
-
-        if not values:
-            raise RuntimeError("Ultraviolet: label not found. Is this a sensor?")
-
-        # who cares if more => bug??? Check the get_values() above
-        if len(values) > 1:
-            self.logger.warning(
-                "Node {}: get_values(Ultraviolet) returned more than one value!?".format(
-                    node.node_id
-                )
-            )
-
-        value = [
-            v.data
-            for k,v in values.items()
-        ][0]
-
-        return {
-            "controller": self.controller_name,
-            "sensor": node.node_id,
-            "location": node.location,
-            "type": 'ultraviolet',
-            "updateTime": self._get_node_timestamp(node),
-            "value": value
-        }
+        #### COMPLETE THIS METHOD ####
 
 
     def get_sensor_motion(self, n):
@@ -1272,37 +1042,7 @@ class Backend_with_sensors(Backend):
             "value": ...
         }
         """
-        node = self._lookup_sensor_node(n)
-        values = node.get_values(
-            class_id="All",      
-            genre="User", readonly=True, writeonly=False,
-            label=self._labels_xref['motion']
-        )
-
-        if not values:
-            raise RuntimeError("Motion: label not found. Is this a sensor?")
-
-        # who cares if more => bug??? Check the get_values() above
-        if len(values) > 1:
-            self.logger.warning(
-                "Node {}: get_values(Motion) returned more than one value!?".format(
-                    node.node_id
-                )
-            )
-
-        value = [
-            v.data
-            for k,v in values.items()
-        ][0]
-
-        return {
-            "controller": self.controller_name,
-            "sensor": node.node_id,
-            "location": node.location,
-            "type": 'motion',
-            "updateTime": self._get_node_timestamp(node),
-            "value": value
-        }
+        #### COMPLETE THIS METHOD ####
 
 
     def get_sensor_battery(self, n):
@@ -1327,37 +1067,7 @@ class Backend_with_sensors(Backend):
             "value": ...
         }
         """
-        node = self._lookup_sensor_node(n)
-        values = node.get_values(
-            class_id="All",      
-            genre="User", readonly=True, writeonly=False,
-            label=self._labels_xref['battery']
-        )
-
-        if not values:
-            raise RuntimeError("Battery: label not found. Is this a sensor?")
-
-        # who cares if more => bug??? Check the get_values() above
-        if len(values) > 1:
-            self.logger.warning(
-                "Node {}: get_values(Battery) returned more than one value!?".format(
-                    node.node_id
-                )
-            )
-
-        value = [
-            v.data
-            for k,v in values.items()
-        ][0]
-
-        return {
-            "controller": self.controller_name,
-            "sensor": node.node_id,
-            "location": node.location,
-            "type": 'battery',
-            "updateTime": self._get_node_timestamp(node),
-            "value": value
-        }
+        #### COMPLETE THIS METHOD ####
 
 
     def get_sensor_readings(self, n):
@@ -1383,36 +1093,7 @@ class Backend_with_sensors(Backend):
             "value": ...
         }
         """
-        node = self._lookup_sensor_node(n)
-        values = node.get_values(
-            class_id="All",      
-            genre="User", readonly=True, writeonly=False,
-            label="All"
-        )
-
-        if len(values) > 1:
-            self.logger.warning(
-                "Node {}: get_values(Battery) returned more than one value!?".format(
-                    node.node_id
-                )
-            )
-
-        values = {
-            v.label: v.data
-            for k,v in values.items()
-        }
-
-        return {
-                "battery": values["Battery Level"],
-                "controller": self.controller_name,
-                "humidity": values["Relative Humidity"],
-                "location": node.location,
-                "luminance": values["Luminance"],
-                "motion": values["Sensor"],
-                "sensor": node.node_id,
-                "temperature": int(values["Temperature"]),
-                "updateTime": self._get_node_timestamp(node)
-        }
+        #### COMPLETE THIS METHOD ####
 
 
     def set_sensors_parameter(self, index, value, size):
@@ -1437,13 +1118,7 @@ class Backend_with_sensors(Backend):
 
         :raises: RuntimeError: if network is not started
         """
-        nodes = self.network.nodes
-        values = {}
-        for k,node in nodes.items():
-            if self._is_sensor(node):
-                values[k] = node.set_config_param(index, value, size)
-
-        return values
+        #### COMPLETE THIS METHOD ####
 
 
 ################################################################################
@@ -1477,39 +1152,7 @@ class Backend_with_dimmers(Backend):
             "value": ...
         }
         """
-        
-        node = self._lookup_dimmer_node(n)
-        values = node.get_values(
-            class_id="All",      
-            genre="User", readonly=False, writeonly=False,
-            label=self._labels_xref['level']
-        )
-       
-
-        if not values:
-            raise RuntimeError("Level: label not found. Is this a dimmer?")
-
-        
-        if len(values) > 1:
-            self.logger.warning(
-                "Node {}: get_values(Level) returned more than one value!?".format(
-                    node.node_id
-                )
-            )
-
-        value = [
-            v.data
-            for k,v in values.items()
-        ][0]
-
-        return {
-            "controller": self.controller_name,
-            "sensor": node.node_id,
-            "location": node.location,
-            "type": 'level',
-            "updateTime": self._get_node_timestamp(node),
-            "value": value
-        }
+        #### COMPLETE THIS METHOD ####
 
 
     def set_dimmer_level(self, n, value):
@@ -1522,18 +1165,7 @@ class Backend_with_dimmers(Backend):
 
         :raises: RuntimeError: if the node is not {found | ready | dimmer}
         """
-
-
-        node = self._lookup_dimmer_node(n)
-        all_values = node.get_values("All","User","All","All").values()
-        current_value = None
-        for v in all_values:
-            if(v.label == 'Level'):
-                current_value = v.data
-                v.data = value
-                return [current_value, 'OK']
-            else:
-                raise RuntimeError("Label not found")
+        #### COMPLETE THIS METHOD ####
 
 
 ################################################################################

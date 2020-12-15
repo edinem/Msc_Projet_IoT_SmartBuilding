@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+################################################################################
+# check_sensors: utility script to check the state of all sensors in a network
+################################################################################
+# set -x
+debug=
+set -o nounset -o pipefail
+
+status=0
+
+host=${1:?'arg 1 missing: controller host name'}
+
+redir='2>/dev/null'
+[ "$debug" ] && redir=
+
+pclient="post_client.py -u http://${host}"
+pregex='/[{}]/!p'
+pfilter="sed -nr ${pregex}"
+
+# get the node range to probe -- #1 is the controller, there's no way to know
+# if a node is a sensor as it's "name" is arbitrary
+cmnd="${pclient} sensors get_sensors_list"
+nids=$(eval $cmnd $redir | $pfilter | sed -nr 's/^\s+"([[:digit:]]+)".+$/\1/p') || {
+    echo >&2 "[error] can't get sensors list"
+    exit 1
+}
+
+# needs quite to preserve newlines
+nids=$(echo "$nids" | sort -g)
+for n in $nids; do
+    cmnd="${pclient} sensors get_all_measures -n $n -f updateTime"
+    printf "node %3d: " $n
+    eval $cmnd $redir | $pfilter || {
+        echo >&2 "[error] ${n}: can't get measures for this node"
+        ((status++))
+    }
+done
+
+exit $status
