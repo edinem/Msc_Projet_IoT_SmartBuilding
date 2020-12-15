@@ -1,0 +1,54 @@
+#!/bin/bash
+################################################################################
+# internet-sharing
+#
+# Forward outbound traffic from a client interface to an internet gateway
+# interface.
+#
+# <https://wiki.archlinux.org/index.php/Internet_sharing>
+# <https://linoxide.com/firewall/ip-forwarding-connecting-private-interface-internet/>
+################################################################################
+usage=$(cat <<EOF
+Usage:
+
+  $0 GWINTERFACE CLINTERFACE COMMAND
+
+where:
+
+  GWINTERFACE internet gateway interface -- all outbound traffic, e.g. "net0"
+  CLINTERFACE client interface -- input traffic, e.g. "net1"'
+  COMMAND     "start", "stop" or "restart"
+EOF
+)
+
+function do_start {
+    sysctl net.ipv4.ip_forward=1 net.ipv6.conf.default.forwarding=1 net.ipv6.conf.all.forwarding=1
+    iptables -t nat -A POSTROUTING -o $gwint -j MASQUERADE
+    iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    iptables -A FORWARD -i $clint -o $gwint -j ACCEPT
+}
+
+function do_stop {
+    sysctl net.ipv4.ip_forward=0 net.ipv6.conf.default.forwarding=0 net.ipv6.conf.all.forwarding=0
+    iptables -F
+    iptables -t nat -F
+}
+
+gwint=${1:?'arg #1 missing: internet gateway interface -- all outbound traffic, e.g. "net0"'}
+clint=${2:?'arg #2 missing: client interface -- input traffic, e.g. "net1"'}
+cmmnd=${3:?'arg #3 missing: command (start, stop, restart)'}
+
+case $cmmnd in
+    start)
+        do_start
+        ;;
+    stop)
+        do_stop
+        ;;
+    restart)
+        do_stop && do_start
+        ;;
+    *)
+        echo >&2 "[error] $cmmnd: invalid command"
+        echo >&2 "${usage}"
+esac

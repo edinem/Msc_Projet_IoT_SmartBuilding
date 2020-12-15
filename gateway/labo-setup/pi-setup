@@ -1,0 +1,79 @@
+#!/bin/bash
+################################################################################
+# pi-setup
+#
+# Set up a running Raspberry Pi with customizations, such as hostname and
+# hosts files, via SSH.  For now, customizable parts in selected files are
+# marked by '__X__' which is replaced by the kit's ID.
+################################################################################
+# globals
+base_net='192.168.1.1'
+# base_ip="${base_net}.1"
+pi_user='pi'
+sshc="ssh -o StrictHostKeyChecking=No"
+
+# debug=1
+# set -x
+
+# defaults
+_files='/etc/hostname /etc/hosts'
+
+usage=$(cat <<EOF
+
+
+Usage:
+
+  $0 KIT-ID [NET [FILES]]
+
+where:
+
+  KIT-ID    The integer kit's ID or its IP address.
+  NET-IP    Base net IP 'x.y.z'. Default: ${base_net}
+  FILES     Optional list of files to modify. Default: ${_files}
+EOF
+)
+
+kit_id=${1:?"arg #1 missing: integer kit ID. ${usage}"}
+net_ip=${2:-${base_net}}
+files=${3:-${_files}}
+
+kit_ip=${net_ip}${kit_id}
+
+# each remote cmd has its own msg at the same index in $msgs
+declare -a cmds=(
+    "sudo sed -ri.bak 's/__X__/${kit_id}/g' ${files}"
+    "sudo raspi-config nonint do_boot_behaviour B4"
+    "~/.local/bin/pyozw_check --config_path /etc/openzwave/ -i -d /dev/ttyACM0 --user_path ~/tmp/OZW"
+    "~/.local/bin/pyozw_check --config_path /etc/openzwave/ -l -d /dev/ttyACM0 --user_path ~/tmp/OZW"
+    "sudo systemctl daemon-reload && sync"
+)
+declare -a msgs=(
+    "setting host names"
+    "setting GUI auto-login"
+    "checking PyOZW setup -- info"
+    "checking PyOZW setup -- network"
+    "finishing"
+)
+
+echo "[info] kit IP: ${net_ip}${kit_id}"
+
+status=0
+# loop by index
+for i in "${!cmds[@]}"; do
+    msg=${msgs[$i]}
+    cmd=${cmds[$i]}
+    [ "$debug" ] && echo "[debug] cmd: '${cmd}'"
+    echo "[info] ${msg}"
+    ${sshc} ${pi_user}@${kit_ip} ${cmd} || {
+        echo "[error] remote cmd failed"
+        ((status++))
+    }
+done
+
+# executed out of the loop because closing the connection causes an exit
+# status !0
+echo "[info] rebooting..."
+${sshc} ${pi_user}@${kit_ip} "sudo shutdown -r now"
+
+echo "[info] please ignore messages: unable to resolve host rpbiX"
+exit ${status}

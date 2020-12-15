@@ -1,0 +1,2 @@
+*.py.* gitlab-language=python
+backend.py.complete filter=git-crypt diff=git-crypt

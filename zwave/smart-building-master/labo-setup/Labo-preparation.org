@@ -1,0 +1,120 @@
+* Labo preparation checklist *
+
+Problem: we need the MAC addresses (both Wi-Fi and Ethernet) to connect all
+the Pi's to a router. The only way to get them is to connect each Pi, one by
+one (with a master labo image on its SD), on a router and check the "attached
+devices". Addresses are recorded in file `Raspberry-install-md`.
+
+* Meta preparation
+
+This is an Emacs Org's file. Before starting a new whole lab preparation,
+reset all the TODO and CHECK lists!
+
+
+* DONE Configure router
+- [X] Backup original configuration
+- [X] Set admin password
+- [X] Set SSID "IoT-Labo"
+- [X] Wi-Fi
+  - [X] set options WPA2-PSK
+  - [X] Set Wi-Fi passphrase
+- [X] Set DHCP address span 192.168.1.2-254
+- [X] Set LAN address reservation DHCP - IP
+  - [X] #1
+  - [X] #2
+  - [X] #3
+  - [X] #4
+  - [X] #5
+  - [X] #6
+  - [X] #7
+  - [X] #8
+  - [X] #9
+  - [X] #10
+  - [X] #11
+  - [X] #12
+  - [X] #13
+  - [X] #14
+  - [X] #15
+  - [X] #16
+  - [X] #17
+  - [X] #18
+
+* TODO Assemble 15 + 2 student kits
+- [X] Raspberry Pi4 board in its box
+  - [X] label
+    - [X] #1
+    - [X] #2
+    - [X] #3
+    - [X] #4
+    - [X] #5
+    - [X] #6
+    - [X] #7
+    - [X] #8
+    - [X] #9
+    - [X] #10
+    - [X] #11
+    - [X] #12
+    - [X] #13
+    - [X] #14
+    - [X] #15
+    - [X] #16
+    - [X] #17
+    - [X] #18
+- [ ] USB-C AC adaptor: 1-15
+- [ ] SD card: 1-17
+- [ ] Z-Wave ZMEEUZB1 controller: 1-15
+- [ ] Dimmer cable: 1-15
+- [ ] Multisensor: 1-15
+- [ ] Smart bulb: 1-15
+- [ ] RJ45 cable: 1-15
+
+* TODO Install the latest labo image
+- [X] Download latest Raspbian Pi OS image (with GUI desktop; not NOOBS!)
+- [X] Tweak the original Raspbian Pi OS image (see `Raspberry-install-md`)
+- [X] Install the tweaked image on a test Pi
+- [X] Complete the labo installation on the test Pi
+- [X] Dump the final labo image (master) from SD onto HD =>
+  `raspios_Labo-IoT.YYYY-MM-DD.img`
+- [X] Clone the master image onto the other SD cards: (WIP: how to do with
+  Ansible or Docker, instead?)
+  - [X] #1
+  - [X] #2
+  - [X] #3
+  - [X] #4
+  - [X] #5
+  - [X] #6
+  - [X] #7
+  - [X] #8
+  - [X] #9
+  - [X] #10
+  - [X] #11
+  - [X] #12
+  - [X] #13
+  - [X] #14
+  - [X] #15
+  - [X] #16
+  - [X] #17
+  - [X] #18
+
+
+* TODO Finalize the OS setup
+Boot up a Raspberry with the final labo image on its SD card. Then call
+the script `pi-setup`: (WIP: how to do with Ansible or Docker, instead?):
+- [X] #1
+- [X] #2
+- [X] #3
+- [X] #4
+- [X] #5
+- [X] #6
+- [X] #7
+- [X] #8
+- [X] #9
+- [X] #10
+- [X] #11
+- [X] #12
+- [X] #13
+- [X] #14
+- [X] #15
+- [X] #16
+- [X] #17
+- [X] #18

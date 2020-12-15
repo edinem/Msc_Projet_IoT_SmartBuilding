@@ -1,0 +1,7 @@
+{
+    "name": "Smart Building",
+    "title": "Smart Building REST API",
+    "description": "A Flask-based server for hepia's LSDS IoT Z-Wave Lab",
+    "url" : "http://192.168.1.1x:5000",
+    "version": "1.0.0"
+}

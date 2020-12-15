@@ -1,0 +1,11 @@
+127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+# >>> Start >>> IoT-Labo customizations: '__X__' will be replaced by the correct kit ID
+127.0.1.1       rpbi__X__
+
+192.168.1.1__X__    rbpiw__X__
+192.168.1.2__X__    rpbie__X__
+# <<< END <<< IoT-Labo customizations
