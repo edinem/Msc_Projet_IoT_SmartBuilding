@@ -12,6 +12,10 @@ Ce projet a pour but de développer un logiciel permettant de fournir aux utilis
 
 ### Architecture du projet
 
+![Architecture - Sensors](./images/Iot_Sensors.png)
+![Architecture - Application Android](./images/IoT_Android.png)
+![Architecture - Exécutions des commandes](./images/IoT_traitement.png) 
+
 ### Exécuter le projet 
 Afin d'exécuter le projet, il faut effectuer les étapes suivantes :
 * Mettre en place l'infrastrcture :
