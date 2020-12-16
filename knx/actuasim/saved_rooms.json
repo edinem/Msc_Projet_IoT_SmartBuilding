@@ -3,21 +3,21 @@
         "blinds": [
             {
                 "address": "1.0.0@1/4/1",
-                "value": 51
+                "value": 127
             },
             {
                 "address": "1.0.1@1/4/2",
-                "value": 51
+                "value": 127
             }
         ],
         "valves": [
             {
                 "address": "1.0.2@0/4/1",
-                "value": 127
+                "value": 0
             },
             {
                 "address": "1.0.3@0/4/2",
-                "value": 127
+                "value": 0
             }
         ]
     },

@@ -141,12 +141,12 @@ public class MainActivity extends AppCompatActivity {
                             Integer.toString(nearestBeacon.getMajor()) + ")";
                         Log.d(TAG, msg);
                         PositionText.setText(msg);
-                        start();
                         if(!tmpRoom.equals(currentRoom)){
                             if(!tmpRoom.equals("")) {
                                 lastRoom = tmpRoom;
                             }
                             askValues();
+                            start();
                         }
                     }
                 }
